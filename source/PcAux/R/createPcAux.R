@@ -34,6 +34,7 @@ createPcAux <- function(pcAuxData,
                         doImputation = TRUE,
                         castData     = !doImputation,
                         control,
+                        micemethods = c("norm", "polr", "polyreg", "logreg"),
                         ...)
 {
     pcAuxData$setCall(match.call(), parent = "createPcAux")
@@ -51,7 +52,7 @@ createPcAux <- function(pcAuxData,
     
     ## Add elements to an extant instance of the PcAuxData class:
     pcAuxData$nComps   <- nComps
-    pcAuxData$forcePmm <- TRUE # Don't give imputation options other than PMM
+    pcAuxData$forcePmm <- FALSE # Don't give imputation options other than PMM
     pcAuxData$intMeth  <- as.integer(interactType)
     pcAuxData$maxPower <- as.integer(maxPolyPow)
     pcAuxData$simMode  <- simMode
@@ -122,7 +123,7 @@ createPcAux <- function(pcAuxData,
     ## Execute the initial, single imputation:
     if(doImputation) {
 
-        doSingleImputation(map = pcAuxData)
+        doSingleImputation(map = pcAuxData, micemethods = micemethods)
 
         ## Use imputed data to update nominal variable representations:
         if(length(pcAuxData$nomVars) > 0) pcAuxData$codeNomVars()

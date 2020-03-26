@@ -40,7 +40,9 @@ miWithPcAux <- function(rawData,
                         forcePmm   = FALSE,
                         nProcess   = 1L,
                         verbose    = 2L,
-                        control)
+                        control,
+                        micemethods = c("norm", "polr", "polyreg", "logreg")
+                       )
 {
     pcAuxData$setCall(match.call(), parent = "miWithPcAux")
 
@@ -144,13 +146,10 @@ miWithPcAux <- function(rawData,
     check <- pcAuxData$useQuickPred && length(pcAuxData$minPredCor) == 1 
     if(check) errFun("noMinCor")
     
-    predMat <- makePredMatrix(mergedData   = pcAuxData$data,
-                              nLinear      = nLin,
-                              nNonLinear   = nNonLin,
-                              useQuickPred = pcAuxData$useQuickPred,
-                              minCor       = ifelse(pcAuxData$useQuickPred,
-                                                    pcAuxData$minPredCor[2],
-                                                    NULL)
+    predMat <- pcQuickPred(mergedData   = pcAuxData$data,
+                           nLinear      = nLin,
+                           nNonLinear   = nNonLin,
+                           mincor       = .01
                               )
     if(verbose > 1) cat("done.\n")
 
@@ -159,7 +158,7 @@ miWithPcAux <- function(rawData,
     
     ## Specify a vector of elementary imputation methods:
     if(verbose > 1) cat("--Creating method vector...")
-    pcAuxData$createMethVec()
+    pcAuxData$createMethVec(micemethods = micemethods)
     if(verbose > 1) cat("done.\n")
 
     pcAuxData$setTime("methVec")
