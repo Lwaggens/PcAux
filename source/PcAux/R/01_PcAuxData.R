@@ -239,7 +239,6 @@ PcAuxData$
             frozenMods   <<- vector("character")
             loggedEvents <<- data.frame(NULL)
             predMat      <<- matrix(NULL)
-            miceMids     <<- NULL
         },
         
         ##--------------- "Overloaded" / Non-Standard Mutators ---------------##
