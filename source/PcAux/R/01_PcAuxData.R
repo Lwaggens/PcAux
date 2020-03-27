@@ -238,7 +238,7 @@ PcAuxData$
             dumVars      <<- vector("character")
             frozenMods   <<- vector("character")
             loggedEvents <<- data.frame(NULL)
-            predMat      <<- matrix(NULL)
+            predMat      <<- matrix()
         },
         
         ##--------------- "Overloaded" / Non-Standard Mutators ---------------##
