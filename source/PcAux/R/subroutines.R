@@ -361,7 +361,7 @@ doSingleImputation <- function(map, micemethods = micemethods) {
     
     ## Construct a design matrix of predictors:
     if(map$verbose > 0) cat("--Constructing predictor matrix...")
-    predMat <- makePredMat(map = map)
+    map$predMat <- makePredMat(map = map)
     if(map$verbose > 0) cat("done.\n")
     
     passCount <- ifelse(map$forcePmm, 1, 0)
@@ -379,7 +379,7 @@ doSingleImputation <- function(map, micemethods = micemethods) {
             mice(data            = map$data,
                  maxit           = map$miceIters,
                  m               = 1L,
-                 predictorMatrix = predMat,
+                 predictorMatrix = map$predMat,
                  method          = map$methVec,
                  printFlag       = map$verbose > 1,
                  seed            = map$seed,
@@ -391,6 +391,8 @@ doSingleImputation <- function(map, micemethods = micemethods) {
         if(class(map$data) != "try-error") { # mice() didn't crash
             ## Record any logged events 
             map$loggedEvents <- as.data.frame(map$data$loggedEvents)
+            ## Save mids
+            map$miceMids <- map$data
             ## Fill missing values with the imputations
             map$data         <- complete(map$data)
         } else {
