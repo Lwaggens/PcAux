@@ -417,8 +417,6 @@ doSingleImputation <- function(map, micemethods = micemethods) {
         }
     }# CLOSE while(passCount < 2)
     
-    rm(predMat)
-    
     ## If there are any more missing data, fill them through mean substitution:
     meanSubstitute(map)
 
