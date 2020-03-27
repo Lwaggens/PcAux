@@ -307,7 +307,7 @@ pcQuickPred <- function(data,
   
   for (i in items) {
     
-    if ( rowSums(pcPredictorMatrix[i,]) > maxPredCounts[i] ) {
+    if ( sum(pcPredictorMatrix[i,]) > maxPredCounts[i] ) {
       keep <- which(itemCors[ 1:maxPredCounts[i] ] )
       pcPredictorMatrix[ i, !keep ] <- 0
     } # end if
