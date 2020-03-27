@@ -301,7 +301,7 @@ pcQuickPred <- function(data,
   
   # get list of decreasing PC-item correlations for each item
   rankedCorsList <- map(items, function(c) {
-    itemCors <- corMat[c]
+    itemCors <- corMat[c, PCs]
     names(itemCors) <- PCs
     itemCors <- itemCors[order(itemCors, decreasing=TRUE)] } )
   
