@@ -95,7 +95,9 @@ PcAuxData <-
                     corPairs     = "data.frame",
                     dumVars      = "character",
                     frozenMods   = "character",
-                    loggedEvents = "data.frame"
+                    loggedEvents = "data.frame",
+                    predMat      = "matrix",
+                    miceMids     = "mids"
                 )# END fields
                 )# END PcAuxData
 
@@ -237,6 +239,8 @@ PcAuxData$
             dumVars      <<- vector("character")
             frozenMods   <<- vector("character")
             loggedEvents <<- data.frame(NULL)
+            predMat      <<- matrix(NULL)
+            miceMids     <<- NULL
         },
         
         ##--------------- "Overloaded" / Non-Standard Mutators ---------------##
