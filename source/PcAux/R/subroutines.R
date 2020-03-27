@@ -392,7 +392,7 @@ doSingleImputation <- function(map, micemethods = micemethods) {
             ## Record any logged events 
             map$loggedEvents <- as.data.frame(map$data$loggedEvents)
             ## Save mids
-            map$miceMids <- map$data
+            map$miceObject <- map$data
             ## Fill missing values with the imputations
             map$data         <- complete(map$data)
         } else {
