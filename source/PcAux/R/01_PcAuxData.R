@@ -96,8 +96,7 @@ PcAuxData <-
                     dumVars      = "character",
                     frozenMods   = "character",
                     loggedEvents = "data.frame",
-                    predMat      = "matrix",
-                    miceMids     = "mids"
+                    predMat      = "matrix"
                 )# END fields
                 )# END PcAuxData
 
