@@ -310,7 +310,7 @@ pcQuickPred <- function(data,
     if ( sum(pcPredictorMatrix[i,]) > maxPredCounts[i] ) {
       keep <- rankedCorsList[[i]][ 1:maxPredCounts[i]]
       keepNames <- colnames(pcPredictorMatrix) %in% names(keep)  
-      pcPredictorMatrix[ i, !keep ] <- 0
+      pcPredictorMatrix[ i, !keepNames ] <- 0
     } # end if
     
   } # next i
