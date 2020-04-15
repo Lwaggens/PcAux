@@ -245,7 +245,7 @@ makePredMatrix <- function(mergedData,
 ## New Predictor Matrix Method to ensure no PCs below a certain threshhold are used
 ## Also protects against nPredictors > nObservations iteratively
 pcQuickPred <- function(data,
-                        mincor = .01,
+                        mincor = micPcCor,
                         nLinear = NULL,
                         nNonLinear = NULL ) {
 
