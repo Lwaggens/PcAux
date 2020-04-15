@@ -419,7 +419,8 @@ PcAuxData$
                 conMinLev    = conMinLev,
                 nGVarCats    = nGVarCats,
                 pcaMemLev    = pcaMemLev,
-                checkStatus  = checkStatus
+                checkStatus  = checkStatus,
+                minPcCor     = minPcCor
             )
         },        
         ##-------------- Data Screening and Manipulation Methods -------------##
