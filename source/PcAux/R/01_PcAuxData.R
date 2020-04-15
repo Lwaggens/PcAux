@@ -286,7 +286,8 @@ PcAuxData$
                          "collinThresh",
                          "miceRidge",
                          "checkStatus",
-                         "useQuickPred")
+                         "useQuickPred",
+                         "minPcCor")
             
             for(n in names(x)) {
                 if(n %in% nonInts) field(n, x[[n]])
