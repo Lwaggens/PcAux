@@ -96,7 +96,8 @@ PcAuxData <-
                     dumVars      = "character",
                     frozenMods   = "character",
                     loggedEvents = "data.frame",
-                    predMat      = "matrix"
+                    predMat      = "matrix",
+                    minPcCor     = "numeric"
                 )# END fields
                 )# END PcAuxData
 
@@ -139,7 +140,8 @@ PcAuxData$
                               checkStatus  = "none",
                               useQuickPred = FALSE,
                               minRespCount = as.integer(
-                                  floor(0.05 * nrow(data))
+                                  floor(0.05 * nrow(data)),
+                              minPcCor    = 0.1
                               )
                               )
         {
@@ -178,6 +180,7 @@ PcAuxData$
             nGVarCats    <<- nGVarCats
             checkStatus  <<- checkStatus
             useQuickPred <<- useQuickPred
+            minPcCor     <<- minPcCor
             
             ## Structured fields:
             call <<- list(
