@@ -140,9 +140,9 @@ PcAuxData$
                               checkStatus  = "none",
                               useQuickPred = FALSE,
                               minRespCount = as.integer(
-                                  floor(0.05 * nrow(data)),
+                                  floor(0.05 * nrow(data)) 
+                              ),
                               minPcCor    = 0.1
-                              )
                               )
         {
             "Initialize an object of class PcAuxData"
