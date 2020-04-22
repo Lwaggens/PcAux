@@ -246,18 +246,19 @@ makePredMatrix <- function(mergedData,
 ## Also protects against nPredictors > nObservations iteratively
 pcQuickPred <- function(data,
                         mincor = minPcCor,
+                        minPredCount = 1,
                         nLinear = NULL,
                         nNonLinear = NULL ) {
-
+  
   if(nNonLinear > 0)
     PCs    <- c(paste0("linPC", c(1 : nLinear)),
-                     paste0("nonLinPC", c(1 : nNonLinear))
+                paste0("nonLinPC", c(1 : nNonLinear))
     )
   else 
     PCs    <- paste0("linPC", c(1 : nLinear))
   
   
-  items <- setdiff(names(data), PCs)
+  itemNames <- setdiff(names(data), PCs)
   
   nvar <- ncol(data)
   pcPredictorMatrix <- matrix(0, 
@@ -271,12 +272,12 @@ pcQuickPred <- function(data,
   
   # get y-corrs
   suppressWarnings(yCor <- abs(cor(dataMat, use = "pairwise.complete.obs", 
-                                method = "pearson")))
+                                   method = "pearson")))
   yCor[is.na(yCor)] <- 0
   
   # get r-corrs
   suppressWarnings(rCor <- abs(cor(x = rMat, y = dataMat, use = "pairwise.complete.obs", 
-                                method = "pearson")))
+                                   method = "pearson")))
   rCor[is.na(rCor)] <- 0
   
   # get larger of yCor and rCor, but only consider r-corr when corresponding
@@ -287,7 +288,7 @@ pcQuickPred <- function(data,
   pcPredictorMatrix[corMat > mincor] <- 1
   
   # only allow PCs to predict - remove items
-  pcPredictorMatrix[, items] <- 0
+  pcPredictorMatrix[, itemNames] <- 0
   
   # no self-prediction
   diag(pcPredictorMatrix) <- 0
@@ -296,26 +297,32 @@ pcQuickPred <- function(data,
   pcPredictorMatrix[colSums(!rMat) == 0, ] <- 0
   
   # get max predictors given observed cases
-  maxPredCounts <- colSums(rMat[,items]) -1
-  names(maxPredCounts) <- items
+  maxPredCounts <- colSums(rMat[,itemNames]) -1
+  names(maxPredCounts) <- itemNames
   
   # get list of decreasing PC-item correlations for each item
-  rankedCorsList <- map(items, function(c) {
+  rankedCorsList <- map(itemNames, function(c) {
     itemCors <- corMat[c, PCs]
     names(itemCors) <- PCs
-    itemCors <- itemCors[order(itemCors, decreasing=TRUE)] } )
+    itemCors <- itemCors[order(itemCors, decreasing=TRUE)] } ) 
+  names(rankedCorsList) <- itemNames
   
-  for (i in items) {
+  for (iName in itemNames) {
     
-    if ( sum(pcPredictorMatrix[i,]) > maxPredCounts[i] ) {
-      keep <- rankedCorsList[[i]][ 1:maxPredCounts[i]]
-      keepNames <- colnames(pcPredictorMatrix) %in% names(keep)  
-      pcPredictorMatrix[ i, !keepNames ] <- 0
+    if ( sum(pcPredictorMatrix[iName,]) > maxPredCounts[iName] ) {
+      keep <- rankedCorsList[[iName]][ 1:maxPredCounts[iName]]
+      keepFlags <- colnames(pcPredictorMatrix) %in% names(keep)  
+      pcPredictorMatrix[ iName, !keepFlags ] <- 0
     } # end if
     
-  } # next i
-
-return(pcPredictorMatrix)
+    # enforce minPredCount
+    force <- rankedCorsList[[iName]][1:minPredCount]
+    forceFlags <- colnames(pcPredictorMatrix) %in% names(force)    
+    pcPredictorMatrix[ iName, forceFlags ] <- 1
+    
+  } # next iName
+  
+  return(pcPredictorMatrix)
 } # end pcQuickPred
 
 ## Wrapper function to give S3/S4-like access to fields:
